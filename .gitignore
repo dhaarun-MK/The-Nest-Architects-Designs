@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+*.local
+
+# Frontend
+frontend/dist/
+frontend/.env
+frontend/.env.example
+
+# Backend
+backend/dist/
+backend/.env
+backend/.env.example

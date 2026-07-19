@@ -1,0 +1,15 @@
+import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+
+@Injectable()
+export class RolesGuard {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: any): boolean {
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    if (!roles) return true;
+    const { user } = context.switchToHttp().getRequest();
+    if (!roles.includes(user?.role)) throw new ForbiddenException('Access denied');
+    return true;
+  }
+}

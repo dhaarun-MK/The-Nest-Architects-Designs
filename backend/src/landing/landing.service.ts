@@ -20,6 +20,8 @@ export class LandingService implements OnModuleInit {
 
   async update(dto: any, heroFile?: Express.Multer.File) {
     if (heroFile) dto.hero_image = await this.cloudinary.uploadImage(heroFile, 'landing');
+    if (dto.remove_hero_image === 'true') dto.hero_image = null;
+    delete dto.remove_hero_image;
     await this.repo.update(1, dto);
     return this.get();
   }

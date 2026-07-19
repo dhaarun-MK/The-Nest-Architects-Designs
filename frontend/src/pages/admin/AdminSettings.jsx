@@ -1,4 +1,5 @@
-import { Box, Typography, Paper, TextField, Button, Grid, CircularProgress, Divider } from '@mui/material';
+import { Box, Typography, Paper, TextField, Button, Grid, CircularProgress, Divider, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getSettings, updateSettings } from '../../api';
 import { useForm } from 'react-hook-form';
@@ -8,21 +9,33 @@ import { toast } from 'react-toastify';
 export default function AdminSettings() {
   const qc = useQueryClient();
   const [logoFile, setLogoFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [logoRemoved, setLogoRemoved] = useState(false);
   const [faviconFile, setFaviconFile] = useState(null);
+  const [faviconPreview, setFaviconPreview] = useState(null);
+  const [faviconRemoved, setFaviconRemoved] = useState(false);
   const { data, isLoading } = useQuery({ queryKey: ['settings'], queryFn: getSettings });
   const { register, handleSubmit, reset } = useForm();
 
-  useEffect(() => { if (data) reset(data); }, [data]);
+  useEffect(() => {
+    if (data) {
+      reset(data);
+      if (!logoRemoved) setLogoPreview(data.logo || null);
+      if (!faviconRemoved) setFaviconPreview(data.favicon || null);
+    }
+  }, [data]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values) => {
       const fd = new FormData();
       Object.entries(values).forEach(([k, v]) => v !== undefined && fd.append(k, v));
       if (logoFile) fd.append('logo', logoFile);
+      else if (logoRemoved) fd.append('remove_logo', 'true');
       if (faviconFile) fd.append('favicon', faviconFile);
+      else if (faviconRemoved) fd.append('remove_favicon', 'true');
       return updateSettings(fd);
     },
-    onSuccess: () => { toast.success('Settings saved!'); qc.invalidateQueries(['settings']); },
+    onSuccess: () => { toast.success('Settings saved!'); setLogoRemoved(false); setFaviconRemoved(false); qc.invalidateQueries(['settings']); },
     onError: () => toast.error('Save failed'),
   });
 
@@ -54,13 +67,27 @@ export default function AdminSettings() {
             <Grid item xs={12}><Typography variant="subtitle1" fontWeight={600} mt={1}>Branding</Typography><Divider /></Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption">Logo</Typography>
-              {data?.logo && <img src={data.logo} alt="logo" style={{ height: 40, display: 'block', marginBottom: 4 }} />}
-              <input type="file" accept="image/*" onChange={e => setLogoFile(e.target.files[0])} />
+              {logoPreview && (
+                <Box position="relative" display="inline-block" mb={1}>
+                  <img src={logoPreview} alt="logo" style={{ height: 40, display: 'block' }} />
+                  <IconButton size="small" onClick={() => { setLogoPreview(null); setLogoFile(null); setLogoRemoved(true); }} sx={{ position: 'absolute', top: -8, right: -8, bgcolor: 'error.main', color: '#fff', p: '2px', '&:hover': { bgcolor: 'error.dark' } }}>
+                    <CloseIcon sx={{ fontSize: 14 }} />
+                  </IconButton>
+                </Box>
+              )}
+              <input type="file" accept="image/*" onChange={e => { setLogoFile(e.target.files[0]); setLogoPreview(URL.createObjectURL(e.target.files[0])); setLogoRemoved(false); }} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption">Favicon</Typography>
-              {data?.favicon && <img src={data.favicon} alt="favicon" style={{ height: 40, display: 'block', marginBottom: 4 }} />}
-              <input type="file" accept="image/*" onChange={e => setFaviconFile(e.target.files[0])} />
+              {faviconPreview && (
+                <Box position="relative" display="inline-block" mb={1}>
+                  <img src={faviconPreview} alt="favicon" style={{ height: 40, display: 'block' }} />
+                  <IconButton size="small" onClick={() => { setFaviconPreview(null); setFaviconFile(null); setFaviconRemoved(true); }} sx={{ position: 'absolute', top: -8, right: -8, bgcolor: 'error.main', color: '#fff', p: '2px', '&:hover': { bgcolor: 'error.dark' } }}>
+                    <CloseIcon sx={{ fontSize: 14 }} />
+                  </IconButton>
+                </Box>
+              )}
+              <input type="file" accept="image/*" onChange={e => { setFaviconFile(e.target.files[0]); setFaviconPreview(URL.createObjectURL(e.target.files[0])); setFaviconRemoved(false); }} />
             </Grid>
 
             <Grid item xs={12}>

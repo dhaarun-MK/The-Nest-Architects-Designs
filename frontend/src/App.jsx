@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { CircularProgress, Box } from '@mui/material';
 import Layout from './components/layout/Layout';
 import Landing from './pages/Landing';
 import Projects from './pages/Projects';
@@ -18,7 +19,12 @@ import AdminCalculator from './pages/admin/AdminCalculator';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminSettings from './pages/admin/AdminSettings';
-import { CircularProgress, Box } from '@mui/material';
+function ProtectedUser({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <Box display="flex" justifyContent="center" mt={10}><CircularProgress /></Box>;
+  if (!user) return <Navigate to="/" replace />;
+  return children;
+}
 
 function ProtectedAdmin({ children }) {
   const { user, loading, isAdmin } = useAuth();
@@ -32,11 +38,11 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Landing />} />
-        <Route path="projects" element={<Projects />} />
-        <Route path="projects/:id" element={<ProjectDetails />} />
-        <Route path="estimator" element={<CostEstimator />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
+        <Route path="projects" element={<ProtectedUser><Projects /></ProtectedUser>} />
+        <Route path="projects/:id" element={<ProtectedUser><ProjectDetails /></ProtectedUser>} />
+        <Route path="estimator" element={<ProtectedUser><CostEstimator /></ProtectedUser>} />
+        <Route path="about" element={<ProtectedUser><About /></ProtectedUser>} />
+        <Route path="contact" element={<ProtectedUser><Contact /></ProtectedUser>} />
         <Route path="auth/callback" element={<AuthCallback />} />
       </Route>
       <Route path="/admin-login-page" element={<AdminLogin />} />

@@ -164,8 +164,15 @@ export default function AdminProjects() {
               <Grid item xs={12} sm={6}>
                 <Typography variant="caption" display="block" mb={1}>Cover Image</Typography>
                 {coverPreview && (
-                  <Box mb={1}>
+                  <Box mb={1} position="relative" display="inline-block">
                     <img src={coverPreview} alt="cover" style={{ width: '100%', maxHeight: 140, objectFit: 'cover', borderRadius: 4 }} />
+                    <IconButton
+                      size="small"
+                      onClick={() => { setCoverPreview(null); setCoverFile(null); }}
+                      sx={{ position: 'absolute', top: -8, right: -8, bgcolor: 'error.main', color: '#fff', p: '2px', '&:hover': { bgcolor: 'error.dark' } }}
+                    >
+                      <CloseIcon sx={{ fontSize: 14 }} />
+                    </IconButton>
                   </Box>
                 )}
                 <input type="file" accept="image/*" onChange={handleCoverChange} style={{ display: 'block' }} />

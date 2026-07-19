@@ -1,4 +1,5 @@
-import { Box, Typography, Paper, TextField, Button, Grid, CircularProgress } from '@mui/material';
+import { Box, Typography, Paper, TextField, Button, Grid, CircularProgress, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getLanding, updateLanding } from '../../api';
 import { useForm } from 'react-hook-form';
@@ -8,19 +9,27 @@ import { toast } from 'react-toastify';
 export default function AdminLanding() {
   const qc = useQueryClient();
   const [heroFile, setHeroFile] = useState(null);
+  const [heroPreview, setHeroPreview] = useState(null);
+  const [heroRemoved, setHeroRemoved] = useState(false);
   const { data, isLoading } = useQuery({ queryKey: ['landing'], queryFn: getLanding });
   const { register, handleSubmit, reset } = useForm();
 
-  useEffect(() => { if (data) reset(data); }, [data]);
+  useEffect(() => {
+    if (data) {
+      reset(data);
+      if (!heroRemoved) setHeroPreview(data.hero_image || null);
+    }
+  }, [data]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (values) => {
       const fd = new FormData();
       Object.entries(values).forEach(([k, v]) => v !== undefined && fd.append(k, v));
       if (heroFile) fd.append('hero_image', heroFile);
+      else if (heroRemoved) fd.append('remove_hero_image', 'true');
       return updateLanding(fd);
     },
-    onSuccess: () => { toast.success('Landing page updated!'); qc.invalidateQueries(['landing']); },
+    onSuccess: () => { toast.success('Landing page updated!'); setHeroRemoved(false); qc.invalidateQueries(['landing']); },
     onError: () => toast.error('Update failed'),
   });
 
@@ -41,8 +50,19 @@ export default function AdminLanding() {
             <Grid item xs={12} sm={6}><TextField fullWidth label="Secondary Button Text" {...register('cta_secondary')} /></Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle2" mb={1}>Hero Background Image</Typography>
-              {data?.hero_image && <img src={data.hero_image} alt="hero" style={{ height: 100, borderRadius: 8, marginBottom: 8, display: 'block' }} />}
-              <input type="file" accept="image/*" onChange={e => setHeroFile(e.target.files[0])} />
+              {heroPreview && (
+                <Box mb={1} position="relative" display="inline-block">
+                  <img src={heroPreview} alt="hero" style={{ height: 100, borderRadius: 8, display: 'block' }} />
+                  <IconButton
+                    size="small"
+                    onClick={() => { setHeroPreview(null); setHeroFile(null); setHeroRemoved(true); }}
+                    sx={{ position: 'absolute', top: -8, right: -8, bgcolor: 'error.main', color: '#fff', p: '2px', '&:hover': { bgcolor: 'error.dark' } }}
+                  >
+                    <CloseIcon sx={{ fontSize: 14 }} />
+                  </IconButton>
+                </Box>
+              )}
+              <input type="file" accept="image/*" onChange={e => { setHeroFile(e.target.files[0]); setHeroPreview(URL.createObjectURL(e.target.files[0])); setHeroRemoved(false); }} />
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="secondary" disabled={isPending}>

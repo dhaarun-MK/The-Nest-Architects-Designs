@@ -21,6 +21,10 @@ export class SettingsService implements OnModuleInit {
   async update(dto: any, logoFile?: Express.Multer.File, faviconFile?: Express.Multer.File) {
     if (logoFile) dto.logo = await this.cloudinary.uploadImage(logoFile, 'settings');
     if (faviconFile) dto.favicon = await this.cloudinary.uploadImage(faviconFile, 'settings');
+    if (dto.remove_logo === 'true') dto.logo = null;
+    if (dto.remove_favicon === 'true') dto.favicon = null;
+    delete dto.remove_logo;
+    delete dto.remove_favicon;
     await this.repo.update(1, dto);
     return this.get();
   }

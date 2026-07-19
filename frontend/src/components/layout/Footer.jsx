@@ -1,8 +1,7 @@
-import { Box, Container, Grid, Typography, Link, IconButton, Divider } from '@mui/material';
+import { Box, Container, Grid, Typography, IconButton, Divider } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { Link as RouterLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../api';
 
@@ -33,16 +32,7 @@ export default function Footer() {
               )}
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="subtitle1" fontWeight={600} mb={1}>Quick Links</Typography>
-            {[['Projects', '/projects'], ['About', '/about'], ['Contact', '/contact'], ['Estimator', '/estimator']].map(([label, to]) => (
-              <Box key={to}>
-                <Link component={RouterLink} to={to} color="inherit" underline="hover" sx={{ opacity: 0.7, fontSize: 14 }}>
-                  {label}
-                </Link>
-              </Box>
-            ))}
-          </Grid>
+
           <Grid item xs={12} md={4}>
             <Typography variant="subtitle1" fontWeight={600} mb={1}>Contact</Typography>
             {s?.email && <Typography variant="body2" sx={{ opacity: 0.7 }}>{s.email}</Typography>}

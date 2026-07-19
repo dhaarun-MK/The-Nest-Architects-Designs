@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CalculatorService } from './calculator-service.entity';
+import { ProjectType } from './project-type.entity';
 
 const DEFAULT_SERVICES = [
   { service: 'Floor Plan', price_per_sqft: 5, category: 'Architecture' },
@@ -17,17 +18,27 @@ const DEFAULT_SERVICES = [
   { service: 'Consultation', price_per_sqft: 1, category: 'Consultation' },
 ];
 
+const DEFAULT_PROJECT_TYPES = ['Villa', 'House', 'Interior', 'Commercial', 'Office', 'Apartment', 'School', 'Hospital'];
+
 @Injectable()
 export class CalculatorServiceProvider implements OnModuleInit {
-  constructor(@InjectRepository(CalculatorService) private repo: Repository<CalculatorService>) {}
+  constructor(
+    @InjectRepository(CalculatorService) private repo: Repository<CalculatorService>,
+    @InjectRepository(ProjectType) private ptRepo: Repository<ProjectType>,
+  ) {}
 
   async onModuleInit() {
     const count = await this.repo.count();
     if (count === 0) await this.repo.save(DEFAULT_SERVICES);
+    const ptCount = await this.ptRepo.count();
+    if (ptCount === 0) await this.ptRepo.save(DEFAULT_PROJECT_TYPES.map(name => ({ name })));
   }
 
   findAll() { return this.repo.find({ where: { is_visible: true } }); }
   findAllAdmin() { return this.repo.find(); }
+  getProjectTypes() { return this.ptRepo.find(); }
+  async addProjectType(name: string) { return this.ptRepo.save({ name }); }
+  async removeProjectType(id: number) { await this.ptRepo.delete(id); return { message: 'Deleted' }; }
 
   calculate(body: any) {
     const GST_RATE = 0.18;

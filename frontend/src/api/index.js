@@ -8,6 +8,9 @@ export const deleteProject = (id) => api.delete(`/projects/${id}`).then(r => r.d
 
 export const getServices = () => api.get('/calculator/services').then(r => r.data);
 export const getAllServices = () => api.get('/calculator/services/all').then(r => r.data);
+export const getProjectTypes = () => api.get('/calculator/project-types').then(r => r.data);
+export const addProjectType = (name) => api.post('/calculator/project-types', { name }).then(r => r.data);
+export const deleteProjectType = (id) => api.delete(`/calculator/project-types/${id}`).then(r => r.data);
 export const calculate = (data) => api.post('/calculator/calculate', data).then(r => r.data);
 export const createService = (data) => api.post('/calculator', data).then(r => r.data);
 export const updateService = (id, data) => api.put(`/calculator/${id}`, data).then(r => r.data);

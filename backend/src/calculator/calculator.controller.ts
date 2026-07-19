@@ -18,6 +18,20 @@ export class CalculatorController {
   @Roles('admin')
   getAllServices() { return this.service.findAllAdmin(); }
 
+  @Get('project-types') getProjectTypes() { return this.service.getProjectTypes(); }
+
+  @Post('project-types')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  addProjectType(@Body() body: { name: string }) { return this.service.addProjectType(body.name); }
+
+  @Delete('project-types/:id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  removeProjectType(@Param('id') id: string) { return this.service.removeProjectType(+id); }
+
   @Post('calculate') calculate(@Body() body: any) { return this.service.calculate(body); }
 
   @Post()

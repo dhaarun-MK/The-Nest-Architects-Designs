@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Container, Typography, Box, Grid, Paper, Button, Stepper, Step, StepLabel, FormControlLabel, Checkbox, RadioGroup, Radio, FormControl, FormLabel, Slider, Divider, CircularProgress, Chip } from '@mui/material';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getServices, calculate } from '../api';
+import { getServices, calculate, getProjectTypes } from '../api';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-const PROJECT_TYPES = ['Villa', 'House', 'Interior', 'Commercial', 'Office', 'Apartment', 'School', 'Hospital'];
 const AREA_MARKS = [{ value: 500, label: '500' }, { value: 1200, label: '1200' }, { value: 2200, label: '2200' }, { value: 5000, label: '5000' }];
 const STEPS = ['Project Type', 'Area', 'Services', 'Delivery', 'Result'];
 
@@ -18,6 +17,8 @@ export default function CostEstimator() {
   const [result, setResult] = useState(null);
 
   const { data: services = [] } = useQuery({ queryKey: ['services'], queryFn: getServices });
+  const { data: projectTypesData = [] } = useQuery({ queryKey: ['project-types'], queryFn: getProjectTypes });
+  const PROJECT_TYPES = projectTypesData.map(pt => pt.name);
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => calculate({ services: selectedServices, area, urgent, projectType }),

@@ -24,6 +24,7 @@ import { SettingsModule } from './settings/settings.module';
         database: config.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        ssl: config.get('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
       }),
     }),
     AuthModule,

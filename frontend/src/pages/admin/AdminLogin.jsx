@@ -11,14 +11,14 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function AdminLogin() {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { login } = useAuth();
+  const { loginAdmin } = useAuth();
   const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: adminLogin,
     onSuccess: (data) => {
-      login(data.access_token, { role: 'admin', name: 'Admin', email: 'dhaarun@gmail.com' });
+      loginAdmin(data.access_token);
       navigate('/admin');
     },
     onError: () => toast.error('Invalid credentials'),

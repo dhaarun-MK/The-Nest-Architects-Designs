@@ -19,6 +19,11 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const loginAdmin = (token) => {
+    localStorage.setItem('token', token);
+    setUser({ role: 'admin', name: 'Admin', email: 'dhaarun@gmail.com' });
+  };
+
   const login = (token, userData) => {
     localStorage.setItem('token', token);
     setUser(userData);
@@ -30,7 +35,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider value={{ user, loading, login, loginAdmin, logout, isAdmin: user?.role === 'admin' }}>
       {children}
     </AuthContext.Provider>
   );

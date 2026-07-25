@@ -30,13 +30,13 @@ function TeamMemberDialog({ open, onClose, member, index, qc }) {
 
   const addMutation = useMutation({
     mutationFn: addTeamMember,
-    onSuccess: () => { toast.success('Member added!'); qc.invalidateQueries(['about']); onClose(); },
+    onSuccess: () => { toast.success('Member added successfully!'); qc.invalidateQueries(['about']); onClose(); },
     onError: () => toast.error('Failed to add member'),
   });
 
   const editMutation = useMutation({
     mutationFn: ({ idx, data }) => updateTeamMember(idx, data),
-    onSuccess: () => { toast.success('Member updated!'); qc.invalidateQueries(['about']); onClose(); },
+    onSuccess: () => { toast.success('Member updated successfully!'); qc.invalidateQueries(['about']); onClose(); },
     onError: () => toast.error('Failed to update member'),
   });
 

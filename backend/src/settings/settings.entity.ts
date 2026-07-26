@@ -8,7 +8,7 @@ export class Settings {
   @Column({ default: 'THE NEST ARCHITECTS' })
   company_name: string;
 
-  @Column({ default: 'dhaarun@gmail.com' })
+  @Column({ default: 'jeyaamani99@gmail.com' })
   email: string;
 
   @Column({ nullable: true }) phone: string;

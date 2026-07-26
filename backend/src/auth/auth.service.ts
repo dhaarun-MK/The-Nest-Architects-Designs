@@ -9,7 +9,7 @@ import { MailService } from '../common/mail.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class AuthService implements OnModuleInit {
+export class AuthService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(Admin) private adminRepo: Repository<Admin>,
@@ -17,14 +17,6 @@ export class AuthService implements OnModuleInit {
     private mailService: MailService,
     private config: ConfigService,
   ) {}
-
-  async onModuleInit() {
-    const existing = await this.adminRepo.findOne({ where: { username: 'dhaarun@gmail.com' } });
-    if (!existing) {
-      const hashed = await bcrypt.hash('Welcome123!', 10);
-      await this.adminRepo.save({ username: 'dhaarun@gmail.com', password: hashed });
-    }
-  }
 
   async googleLogin(googleUser: any) {
     let user = await this.userRepo.findOne({ where: { email: googleUser.email } });

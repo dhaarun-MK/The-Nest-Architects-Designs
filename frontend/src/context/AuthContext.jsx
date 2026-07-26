@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 
   const loginAdmin = (token) => {
     localStorage.setItem('token', token);
-    setUser({ role: 'admin', name: 'Admin', email: 'dhaarun@gmail.com' });
+    setUser({ role: 'admin', name: 'Admin', email: 'jeyaamani99@gmail.com' });
   };
 
   const login = (token, userData) => {

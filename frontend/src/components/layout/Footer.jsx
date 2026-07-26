@@ -37,7 +37,7 @@ export default function Footer() {
             <Typography variant="subtitle1" fontWeight={600} mb={1}>Contact</Typography>
             {s?.email && <Typography variant="body2" sx={{ opacity: 0.7 }}>{s.email}</Typography>}
             {s?.phone && <Typography variant="body2" sx={{ opacity: 0.7 }}>{s.phone}</Typography>}
-            {!s?.email && <Typography variant="body2" sx={{ opacity: 0.7 }}>dhaarun@gmail.com</Typography>}
+            {!s?.email && <Typography variant="body2" sx={{ opacity: 0.7 }}>jeyaamani99@gmail.com</Typography>}
           </Grid>
         </Grid>
         <Divider sx={{ my: 3, borderColor: 'rgba(255,255,255,0.1)' }} />

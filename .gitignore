@@ -1,3 +1,8 @@
+# Prevent compiled files from leaking into src/
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
 node_modules/
 dist/
 .env
@@ -12,3 +17,4 @@ frontend/.env.example
 backend/dist/
 backend/.env
 backend/.env.example
+backend/tsconfig.tsbuildinfo

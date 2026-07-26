@@ -25,9 +25,9 @@ export default function Contact() {
         <Grid item xs={12} md={5}>
           <Typography variant="h5" mb={3}>Get In Touch</Typography>
           {[
-            [<EmailIcon />, 'Email', 'dhaarun@gmail.com'],
-            [<PhoneIcon />, 'Phone', '+91 XXXXX XXXXX'],
-            [<LocationOnIcon />, 'Location', 'Chennai, Tamil Nadu, India'],
+            [<EmailIcon />, 'Email', 'jeyaamani99@gmail.com'],
+            [<PhoneIcon />, 'Phone', '+91 76396 87678'],
+            [<LocationOnIcon />, 'Location', 'Sivaganga, Tamil Nadu, India'],
           ].map(([icon, label, value]) => (
             <Box key={label} display="flex" gap={2} mb={3} alignItems="flex-start">
               <Box sx={{ color: 'secondary.main', mt: 0.5 }}>{icon}</Box>

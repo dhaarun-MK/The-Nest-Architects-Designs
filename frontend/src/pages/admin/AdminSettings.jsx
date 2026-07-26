@@ -58,11 +58,11 @@ export default function AdminSettings() {
             <Grid item xs={12} sm={4}><TextField fullWidth label="Instagram URL" {...register('instagram')} /></Grid>
             <Grid item xs={12} sm={4}><TextField fullWidth label="LinkedIn URL" {...register('linkedin')} /></Grid>
 
-            <Grid item xs={12}><Typography variant="subtitle1" fontWeight={600} mt={1}>SMTP Configuration</Typography><Divider /></Grid>
+            {/* <Grid item xs={12}><Typography variant="subtitle1" fontWeight={600} mt={1}>SMTP Configuration</Typography><Divider /></Grid>
             <Grid item xs={12} sm={6}><TextField fullWidth label="SMTP Host" {...register('smtp_host')} /></Grid>
             <Grid item xs={12} sm={6}><TextField fullWidth label="SMTP Port" {...register('smtp_port')} /></Grid>
             <Grid item xs={12} sm={6}><TextField fullWidth label="SMTP User" {...register('smtp_user')} /></Grid>
-            <Grid item xs={12} sm={6}><TextField fullWidth label="SMTP Password" type="password" {...register('smtp_pass')} /></Grid>
+            <Grid item xs={12} sm={6}><TextField fullWidth label="SMTP Password" type="password" {...register('smtp_pass')} /></Grid> */}
 
             <Grid item xs={12}><Typography variant="subtitle1" fontWeight={600} mt={1}>Branding</Typography><Divider /></Grid>
             <Grid item xs={12} sm={6}>

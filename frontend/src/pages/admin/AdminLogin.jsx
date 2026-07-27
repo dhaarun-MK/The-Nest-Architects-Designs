@@ -33,7 +33,7 @@ export default function AdminLogin() {
         <Typography variant="body2" color="text.secondary" textAlign="center" mb={4}>Admin Panel</Typography>
 
         <Box component="form" onSubmit={handleSubmit(data => mutate({ username: data.username, password: data.password }))}>
-          <TextField fullWidth label="Email" sx={{ mb: 2 }} {...register('username', { required: true })} error={!!errors.username} />
+          <TextField fullWidth label="Username" sx={{ mb: 2 }} {...register('username', { required: true })} error={!!errors.username} />
           <TextField
             fullWidth label="Password" sx={{ mb: 3 }}
             type={showPass ? 'text' : 'password'}

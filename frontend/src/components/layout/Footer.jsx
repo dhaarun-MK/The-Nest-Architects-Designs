@@ -17,7 +17,7 @@ export default function Footer() {
               {s?.company_name || 'THE NEST ARCHITECTS'}
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.7 }}>
-              Designing Spaces. Creating Dreams.
+              Crafting Timeless Architectural Excellence⭐
             </Typography>
             <Box mt={2}>
               {s?.instagram && <IconButton color="inherit" href={s.instagram} target="_blank"><InstagramIcon /></IconButton>}

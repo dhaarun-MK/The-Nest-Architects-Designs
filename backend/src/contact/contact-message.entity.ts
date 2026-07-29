@@ -23,6 +23,9 @@ export class ContactMessage {
   @Column({ default: false })
   is_read: boolean;
 
+  @Column({ default: false })
+  is_pinned: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 }

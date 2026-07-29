@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Typography, Box, Grid, Paper, Button, Stepper, Step, StepLabel, FormControlLabel, Checkbox, RadioGroup, Radio, FormControl, FormLabel, Slider, Divider, CircularProgress, Chip } from '@mui/material';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getServices, calculate, getProjectTypes } from '../api';
+import { getServicesForType, calculate, getProjectTypes } from '../api';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
@@ -16,9 +16,15 @@ export default function CostEstimator() {
   const [urgent, setUrgent] = useState(false);
   const [result, setResult] = useState(null);
 
-  const { data: services = [] } = useQuery({ queryKey: ['services'], queryFn: getServices });
   const { data: projectTypesData = [] } = useQuery({ queryKey: ['project-types'], queryFn: getProjectTypes });
   const PROJECT_TYPES = projectTypesData.map(pt => pt.name);
+  const selectedTypeObj = projectTypesData.find(pt => pt.name === projectType);
+
+  const { data: services = [] } = useQuery({
+    queryKey: ['services', selectedTypeObj?.id],
+    queryFn: () => getServicesForType(selectedTypeObj.id),
+    enabled: !!selectedTypeObj,
+  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => calculate({ services: selectedServices, area, urgent, projectType }),
@@ -78,18 +84,14 @@ export default function CostEstimator() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Typography variant="h6" mb={3}>Select Architecture Services</Typography>
             <Grid container spacing={1}>
-              {services.map(s => {
-                const typePrice = s.project_type_pricing?.[projectType];
-                const displayPrice = typePrice != null ? typePrice : s.price_per_sqft;
-                return (
-                  <Grid item xs={12} sm={6} key={s.service}>
-                    <FormControlLabel
-                      control={<Checkbox checked={selectedServices.includes(s.service)} onChange={() => toggleService(s.service)} color="secondary" />}
-                      label={<Box><Typography variant="body2">{s.service}</Typography><Typography variant="caption" color="text.secondary">₹{displayPrice}/sqft{typePrice != null ? ` (${projectType})` : ''}</Typography></Box>}
-                    />
-                  </Grid>
-                );
-              })}
+              {services.map(s => (
+                <Grid item xs={12} sm={6} key={s.id}>
+                  <FormControlLabel
+                    control={<Checkbox checked={selectedServices.includes(s.serviceName)} onChange={() => toggleService(s.serviceName)} color="secondary" />}
+                    label={<Box><Typography variant="body2">{s.serviceName}</Typography><Typography variant="caption" color="text.secondary">₹{s.price_per_sqft}/sqft</Typography></Box>}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </motion.div>
         )}

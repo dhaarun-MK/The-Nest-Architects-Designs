@@ -6,15 +6,15 @@ export const createProject = (data) => api.post('/projects', data).then(r => r.d
 export const updateProject = (id, data) => api.put(`/projects/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
 export const deleteProject = (id) => api.delete(`/projects/${id}`).then(r => r.data);
 
-export const getServices = () => api.get('/calculator/services').then(r => r.data);
-export const getAllServices = () => api.get('/calculator/services/all').then(r => r.data);
 export const getProjectTypes = () => api.get('/calculator/project-types').then(r => r.data);
-export const addProjectType = (name) => api.post('/calculator/project-types', { name }).then(r => r.data);
+export const addProjectType = (name, services) => api.post('/calculator/project-types', { name, services }).then(r => r.data);
 export const deleteProjectType = (id) => api.delete(`/calculator/project-types/${id}`).then(r => r.data);
+export const getServicesForType = (ptId) => api.get(`/calculator/project-types/${ptId}/services`).then(r => r.data);
+export const getAllServicesForType = (ptId) => api.get(`/calculator/project-types/${ptId}/services/all`).then(r => r.data);
+export const addService = (ptId, data) => api.post(`/calculator/project-types/${ptId}/services`, data).then(r => r.data);
+export const updateService = (id, data) => api.put(`/calculator/services/${id}`, data).then(r => r.data);
+export const deleteService = (id) => api.delete(`/calculator/services/${id}`).then(r => r.data);
 export const calculate = (data) => api.post('/calculator/calculate', data).then(r => r.data);
-export const createService = (data) => api.post('/calculator', data).then(r => r.data);
-export const updateService = (id, data) => api.put(`/calculator/${id}`, data).then(r => r.data);
-export const deleteService = (id) => api.delete(`/calculator/${id}`).then(r => r.data);
 
 export const getLanding = () => api.get('/landing').then(r => r.data);
 export const updateLanding = (data) => api.put('/landing', data).then(r => r.data);
@@ -29,6 +29,7 @@ export const submitContact = (data) => api.post('/contact', data).then(r => r.da
 export const getMessages = () => api.get('/contact').then(r => r.data);
 export const deleteMessage = (id) => api.delete(`/contact/${id}`).then(r => r.data);
 export const markRead = (id) => api.patch(`/contact/${id}/read`).then(r => r.data);
+export const pinMessage = (id) => api.patch(`/contact/${id}/pin`).then(r => r.data);
 
 export const getUsers = () => api.get('/users').then(r => r.data);
 export const deleteUser = (id) => api.delete(`/users/${id}`).then(r => r.data);

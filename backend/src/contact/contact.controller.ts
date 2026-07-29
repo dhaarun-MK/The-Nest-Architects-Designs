@@ -30,4 +30,10 @@ export class ContactController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   markRead(@Param('id') id: string) { return this.service.markRead(+id); }
+
+  @Patch(':id/pin')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  togglePin(@Param('id') id: string) { return this.service.togglePin(+id); }
 }

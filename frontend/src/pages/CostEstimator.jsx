@@ -87,8 +87,8 @@ export default function CostEstimator() {
               {services.map(s => (
                 <Grid item xs={12} sm={6} key={s.id}>
                   <FormControlLabel
-                    control={<Checkbox checked={selectedServices.includes(s.serviceName)} onChange={() => toggleService(s.serviceName)} color="secondary" />}
-                    label={<Box><Typography variant="body2">{s.serviceName}</Typography><Typography variant="caption" color="text.secondary">₹{s.price_per_sqft}/sqft</Typography></Box>}
+                    control={<Checkbox checked={selectedServices.includes(s.name)} onChange={() => toggleService(s.name)} color="secondary" />}
+                    label={<Box><Typography variant="body2">{s.name}</Typography><Typography variant="caption" color="text.secondary">₹{s.price_per_sqft}/sqft</Typography></Box>}
                   />
                 </Grid>
               ))}

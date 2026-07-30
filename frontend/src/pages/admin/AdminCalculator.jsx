@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 const CATEGORIES = ['Architecture', 'Engineering', 'Interior', 'Exterior', 'Visualization', 'Consultation'];
-const EMPTY_ROW = () => ({ serviceName: '', price_per_sqft: '', category: '', customCategory: '', discount: 0, is_visible: true });
+const EMPTY_ROW = () => ({ name: '', price_per_sqft: '', category: '', customCategory: '', discount: 0, is_visible: true });
 
 export default function AdminCalculator() {
   const qc = useQueryClient();
@@ -42,7 +42,7 @@ export default function AdminCalculator() {
   const { mutate: saveService, isPending } = useMutation({
     mutationFn: (data) => {
       const payload = {
-        serviceName: data.serviceName,
+        name: data.name,
         price_per_sqft: Number(data.price_per_sqft) || 0,
         discount: Number(data.discount) || 0,
         is_visible: data.is_visible,
@@ -71,7 +71,7 @@ export default function AdminCalculator() {
     mutationFn: () => {
       const name = newTypeName.trim();
       if (!name) throw new Error('Name required');
-      const filled = typeServices.filter(s => s.serviceName?.trim());
+      const filled = typeServices.filter(s => s.name?.trim());
       const invalid = filled.filter(s => s.price_per_sqft === '' || s.price_per_sqft == null);
       if (invalid.length) throw new Error('Fill price for all named services');
       return addProjectType(name, filled.map(s => ({ ...s, category: resolvedCategory(s) })));
@@ -87,7 +87,7 @@ export default function AdminCalculator() {
 
   const openEdit = (s) => {
     setEditing(s);
-    setValue('serviceName', s.serviceName);
+    setValue('name', s.name);
     setValue('price_per_sqft', s.price_per_sqft);
     setValue('discount', s.discount);
     setValue('is_visible', s.is_visible);
@@ -145,7 +145,7 @@ export default function AdminCalculator() {
               <TableBody>
                 {services.map(s => (
                   <TableRow key={s.id}>
-                    <TableCell>{s.serviceName}</TableCell>
+                    <TableCell>{s.name}</TableCell>
                     <TableCell>{s.category || '—'}</TableCell>
                     <TableCell>₹{s.price_per_sqft}</TableCell>
                     <TableCell>{s.discount}%</TableCell>
@@ -171,7 +171,7 @@ export default function AdminCalculator() {
         <DialogContent>
           <Box component="form" id="svc-form" onSubmit={handleSubmit(d => saveService(d))} mt={1}>
             <Grid container spacing={2}>
-              <Grid item xs={12}><TextField fullWidth label="Service Name" {...register('serviceName', { required: true })} /></Grid>
+              <Grid item xs={12}><TextField fullWidth label="Service Name" {...register('name', { required: true })} /></Grid>
               <Grid item xs={12} sm={6}>
                 <MuiFormControl fullWidth>
                   <InputLabel>Category</InputLabel>
@@ -225,7 +225,7 @@ export default function AdminCalculator() {
             <Box key={i} mb={1}>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={3.5}>
-                  <TextField fullWidth size="small" placeholder="Service Name" value={s.serviceName} onChange={e => updateTypeServiceRow(i, 'serviceName', e.target.value)} />
+                  <TextField fullWidth size="small" placeholder="Service Name" value={s.name} onChange={e => updateTypeServiceRow(i, 'name', e.target.value)} />
                 </Grid>
                 <Grid item xs={3}>
                   <Select fullWidth size="small" value={s.category} onChange={e => updateTypeServiceRow(i, 'category', e.target.value)} displayEmpty>

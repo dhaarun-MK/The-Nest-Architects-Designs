@@ -7,7 +7,7 @@ export class ProjectTypeService {
   id: number;
 
   @Column()
-  serviceName: string;
+  name: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
   price_per_sqft: number;

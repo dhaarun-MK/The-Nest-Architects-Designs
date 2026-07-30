@@ -86,7 +86,7 @@ export class CalculatorServiceProvider
     if (!pt) return { architecture_fee: 0, gst: 0, total: 0 };
 
     const services = await this.svcRepo.find({ where: { project_type_id: pt.id, is_visible: true } });
-    const selected = services.filter(s => body.services.includes(s.serviceName));
+    const selected = services.filter(s => body.services.includes(s.name));
 
     let fee = selected.reduce((sum, s) => {
       const price = Number(s.price_per_sqft) * (1 - s.discount / 100);
